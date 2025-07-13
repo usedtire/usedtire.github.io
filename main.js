@@ -1,5 +1,5 @@
-
-const username = "usedtire"; // Replace this with your GitHub username
+const username = "usedtire"; // Replace with your GitHub username
+const SIX_MONTHS_AGO = new Date(new Date().setMonth(new Date().getMonth() - 6));
 
 // Fetch Starred Repositories
 fetch(`https://api.github.com/users/${username}/starred`)
@@ -33,8 +33,11 @@ fetch(`https://api.github.com/users/${username}/events/public`)
 
     events.forEach(event => {
       if (event.type === "PushEvent") {
-        const date = new Date(event.created_at).toISOString().split("T")[0];
-        commitCounts[date] = (commitCounts[date] || 0) + event.payload.commits.length;
+        const eventDate = new Date(event.created_at);
+        if (eventDate >= SIX_MONTHS_AGO) {
+          const dateStr = eventDate.toISOString().split("T")[0];
+          commitCounts[dateStr] = (commitCounts[dateStr] || 0) + event.payload.commits.length;
+        }
       }
     });
 
@@ -50,7 +53,7 @@ fetch(`https://api.github.com/users/${username}/events/public`)
       data: {
         labels,
         datasets: [{
-          label: "Commits per Day",
+          label: "Commits per Day (Last 6 Months)",
           data: values
         }]
       },
