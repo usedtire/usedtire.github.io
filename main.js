@@ -1,5 +1,5 @@
 
-const username = "your-github-username"; // Replace this with your GitHub username
+const username = "usedtire"; // Replace this with your GitHub username
 
 // Fetch Starred Repositories
 fetch(`https://api.github.com/users/${username}/starred`)
